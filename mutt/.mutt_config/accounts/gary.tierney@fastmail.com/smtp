@@ -1,0 +1,2 @@
+set smtp_url='smtps://garytierney@fastmail.com@smtp.fastmail.com:465/'
+set smtp_pass=`pass passwords/accounts/fastmail.com/app-passwords/mutt/smtp`

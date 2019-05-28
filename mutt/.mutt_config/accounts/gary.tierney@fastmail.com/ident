@@ -1,0 +1,7 @@
+# -*- Mode: muttrc -*-
+
+# Identifying myself
+set realname = 'Gary Tierney'
+set from = 'gary.tierney@fastmail.com'
+set sig_dashes="yes"
+set signature = "~/.mutt_config/accounts/gary.tierney@fastmail.com/signature"

@@ -1,0 +1,9 @@
+source ~/.mutt_config/base
+source ~/.mutt_config/colors
+source ~/.mutt_config/pgp
+source ~/.mutt_config/sidebar
+
+source ~/.mutt_config/accounts/gary.tierney@fastmail.com/ident
+source ~/.mutt_config/accounts/gary.tierney@fastmail.com/imap
+source ~/.mutt_config/accounts/gary.tierney@fastmail.com/mailboxes
+source ~/.mutt_config/accounts/gary.tierney@fastmail.com/smtp

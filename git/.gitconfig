@@ -1,0 +1,33 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Gary Tierney
+	email = gary.tierney@fastmail.com 
+	signingkey = 85D5017AA65093490FCA1DFC1877611C76E48009
+[gpg]
+	program = gpg2
+[core]
+	excludesfile = ~/.gitfiles/gitignore
+	editor = vim
+	whitespace = space-before-tab,trailing-space
+[pull]
+	rebase = true
+[push]
+	default = current
+[sendemail]
+	smtpserver = /usr/bin/esmtp
+[apply]
+	whitespace = fix
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[merge]
+	tool = vimdiff
+[color]
+	ui = auto
+[alias]
+	s = status -s
+	l = log --pretty=oneline --graph
+[url "git@github.com:"]
+	insteadOf = "github:"
+	pushInsteadOf = "git://github.com/"

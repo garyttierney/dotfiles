@@ -1,0 +1,6 @@
+set imap_user="garytierney@fastmail.com"
+set imap_pass=`pass passwords/accounts/fastmail.com/app-passwords/mutt/imap`
+set spoolfile="imaps://imap.fastmail.com"
+set folder="imaps://imap.fastmail.com/"
+set record="+Sent Items"
+set postponed="+Drafts"

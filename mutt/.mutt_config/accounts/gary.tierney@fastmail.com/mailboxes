@@ -1,0 +1,7 @@
+# -*- Mode: muttrc -*-
+mailboxes = =INBOX \
++Archives \
++Development/SELinux \
++"Development/IntelliJ Rust" \
++Spam \
++Trash
