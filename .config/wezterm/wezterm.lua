@@ -1,3 +1,5 @@
+local wezterm = require 'wezterm'
+
 return {
   color_scheme = "tokyonight",
   audible_bell = "Disabled",
@@ -9,6 +11,13 @@ return {
     backend = "Vulkan",
     device_type = "DiscreteGpu",
     name = "NVIDIA GeForce GTX 1660 Ti",
+  },
+  mouse_bindings = {
+    {
+      event = { Up = { streak = 1, button = 'Left' } },
+      mods = 'CTRL',
+      action = wezterm.action.OpenLinkAtMouseCursor,
+    },
   },
   keys = {
     { key = 'f', mods = 'CTRL | SHIFT', action = 'DisableDefaultAssignment' }
