@@ -189,6 +189,9 @@ vim.o.completeopt = 'menuone,noselect'
 -- Use system clipboard as default register
 vim.opt.clipboard:append { 'unnamed', 'unnamedplus' }
 
+-- Block cursor for visual mode, bar otherwise
+vim.opt.guicursor:append { 'v:block-Cursor', 'n-i-c:ver100-iCursor' }
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', {
