@@ -4,9 +4,11 @@ return {
   color_scheme = "tokyonight",
   audible_bell = "Disabled",
   max_fps = 144,
+  use_fancy_tab_bar = false,
   window_decorations = "RESIZE",
   enable_wayland = false, -- https=//github.com/wez/wezterm/issues/1701
   front_end = "WebGpu",
+  default_cursor_style="SteadyBar",
   webgpu_preferred_adapter = {
     backend = "Vulkan",
     device_type = "DiscreteGpu",
