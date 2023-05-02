@@ -9,7 +9,7 @@ function Lsp.setup()
     require('mason').setup()
 
     -- Enable the following language servers
-    local servers = { 'clangd', 'rust_analyzer', 'pyright', 'sumneko_lua' }
+    local servers = { 'clangd', 'rust_analyzer', 'pyright', 'lua_ls' }
 
     -- Ensure the servers above are installed
     require('mason-lspconfig').setup {

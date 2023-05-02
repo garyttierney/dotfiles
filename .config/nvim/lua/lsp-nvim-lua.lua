@@ -7,7 +7,7 @@ function NvimLuaLsp.setup()
     table.insert(runtime_path, 'lua/?.lua')
     table.insert(runtime_path, 'lua/?/init.lua')
 
-    require('lspconfig').sumneko_lua.setup {
+    require('lspconfig').lua_ls.setup {
         on_attach = require('key-mapping').setup_on_attach,
         capabilities = require('lsp').capabilities(),
         settings = {
