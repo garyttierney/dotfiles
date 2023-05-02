@@ -6,13 +6,16 @@ return {
   max_fps = 144,
   use_fancy_tab_bar = false,
   window_decorations = "RESIZE",
-  enable_wayland = false, -- https://github.com/wez/wezterm/issues/1701
+  default_cursor_style = "SteadyBar",
+  hide_mouse_cursor_when_typing = false,
+  enable_kitty_keyboard = true,
   front_end = "WebGpu",
-  default_cursor_style="SteadyBar",
-  webgpu_preferred_adapter = {
-    backend = "Vulkan",
-    device_type = "DiscreteGpu",
-    name = "NVIDIA GeForce GTX 1660 Ti",
+  webgpu_power_preference = "HighPerformance",
+  window_padding = {
+    left = 0,
+    right = 0,
+    top = 0,
+    bottom = 0,
   },
   mouse_bindings = {
     {
