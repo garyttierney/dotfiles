@@ -9,8 +9,6 @@ return {
   default_cursor_style = "SteadyBar",
   hide_mouse_cursor_when_typing = false,
   enable_kitty_keyboard = true,
-  front_end = "WebGpu",
-  webgpu_power_preference = "HighPerformance",
   window_padding = {
     left = 0,
     right = 0,
@@ -25,6 +23,7 @@ return {
     },
   },
   keys = {
-    { key = 'f', mods = 'CTRL | SHIFT', action = 'DisableDefaultAssignment' }
+    { key = 'Tab', mods = 'CTRL',         action = 'DisableDefaultAssignment' },
+    { key = 'f',   mods = 'CTRL | SHIFT', action = 'DisableDefaultAssignment' }
   }
 }
