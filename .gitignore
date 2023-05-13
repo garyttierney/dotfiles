@@ -1,0 +1,18 @@
+# Ignore everything
+*
+
+# But search in our whitelisted directories
+!.config/
+
+# Keep .gitignore
+!.gitignore
+
+# Keep neovim configuration
+!.config/nvim/
+!.config/nvim/**
+
+# Keep wezterm configuration
+!.config/wezterm/
+!.config/wezterm/**
+
+
