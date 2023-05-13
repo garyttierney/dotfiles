@@ -223,6 +223,10 @@ vim.o.clipboard = 'unnamedplus'
 -- Enable break indent
 vim.o.breakident = true
 
+-- Don't continue a comment when pressing 'o'
+-- See `:help fo-table`
+vim.opts.formatoptions:remove('r')
+
 -- Save undo history
 vim.o.undofile = true
 
