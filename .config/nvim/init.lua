@@ -57,12 +57,16 @@ require('lazy').setup({
           },
           { text = { builtin.lnumfunc, " " }, click = 'v:lua.ScLa', },
           {
-            sign = { name = { ".*" }, maxwidth = 1, colwidth = 1, auto = true },
+            sign = { name = { "Dap" }, maxwidth = 1, colwidth = 1 },
             click = "v:lua.ScSa"
           },
           {
             text = { builtin.foldfunc },
-            click = 'v:lua.ScFa'
+            click = 'v:lua.ScFa',
+          },
+          {
+            sign = { name = { "Git" }, maxwidth = 1, colwidth = 1 },
+            click = "v:lua.ScSa",
           },
           {
             text = { '│' },
@@ -113,12 +117,12 @@ require('lazy').setup({
     opts = {
       -- See `:help gitsigns.txt`
       signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
+        add = { hl = 'GitSignsAdd', text = '▎', numhl = 'GitSignsAddNr', linehl = 'GitSignsAddLn' },
+        change = { hl = 'GitSignsChange', text = '▎', numhl = 'GitSignsChangeNr', linehl = 'GitSignsChangeLn' },
+        delete = { hl = 'GitSignsDelete', text = '▎', numhl = 'GitSignsDeleteNr', linehl = 'GitSignsDeleteLn' },
+        topdelete = { hl = 'GitSignsDelete', text = '▎', numhl = 'GitSignsDeleteNr', linehl = 'GitSignsDeleteLn' },
+        changedelete = { hl = 'GitSignsChange', text = '▎', numhl = 'GitSignsChangeNr', linehl = 'GitSignsChangeLn' },
+      }
     },
   },
 
