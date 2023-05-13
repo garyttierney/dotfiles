@@ -247,8 +247,8 @@ vim.o.completeopt = 'menu,menuone,preview,noinsert,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
--- Make sure LspInlayHint is displayed in the same way as a Comment
-vim.api.nvim_set_hl(0, 'LspInlayHint', { link = "Comment" })
+-- Make sure LspInlayHint is displayed in the same way as a whitespace character
+vim.api.nvim_set_hl(0, 'LspInlayHint', { link = "Whitespace" })
 
 -- Enable virtual text for diagnostics and sort by seveirty for sign display
 vim.diagnostic.config({
@@ -501,7 +501,7 @@ cmp.setup {
   },
   experimental = {
     ghost_text = {
-      hl_group = "Comment"
+      hl_group = "Whitespace"
     },
   },
   mapping = cmp.mapping.preset.insert {
