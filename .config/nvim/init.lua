@@ -34,6 +34,17 @@ require('lazy').setup({
     },
   },
 
+  -- Remember our previous session
+  {
+    'rmagatti/auto-session',
+    config = function()
+      require("auto-session").setup {
+        log_level = "error",
+        auto_session_suppress_dirs = { "~/", "~/devel", "/" },
+      }
+    end
+  },
+
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
