@@ -8,7 +8,7 @@ return {
   window_decorations = "RESIZE",
   default_cursor_style = "SteadyBar",
   hide_mouse_cursor_when_typing = false,
-  enable_kitty_keyboard = true,
+  enable_kitty_keyboard = false,
   window_padding = {
     left = 0,
     right = 0,

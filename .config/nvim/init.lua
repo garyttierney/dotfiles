@@ -26,7 +26,13 @@ vim.opt.rtp:prepend(lazypath)
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
-  -- NOTE: First, some plugins that don't require any configuration
+  {
+    'folke/tokyonight.nvim',
+    priority = 1000,
+    opts = {
+      style = "moon",
+    },
+  },
 
   -- Git related plugins
   'tpope/vim-fugitive',
@@ -35,11 +41,30 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+  -- Automatically close delimiters
+  {
+    'windwp/nvim-autopairs',
+    opts = {
+      check_ts = true
+    }
+  },
+
   -- Inlay hints for LSP elements
   {
     'lvimuser/lsp-inlayhints.nvim',
     branch = "anticonceal",
     opts = {},
+  },
+  {
+    "utilyre/barbecue.nvim",
+    name = "barbecue",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons", -- optional dependency
+    },
+    opts = {
+      theme = "tokyonight",
+    },
   },
   -- Replace statuscolumn with something more flexible
   {
@@ -49,6 +74,7 @@ require('lazy').setup({
       require('statuscol').setup {
         setopt = true,
         relculright = true,
+        ft_ignore = { 'dapui_stacks', 'dapui_watches', 'dapui_breakpoints', 'dapui_console', 'dapui_scopes', 'dap-repl' },
         bt_ignore = { 'terminal' },
         segments = {
           {
@@ -125,22 +151,12 @@ require('lazy').setup({
       }
     },
   },
-
-  {
-    -- Theme inspired by Atom
-    'folke/tokyonight.nvim',
-    priority = 1000,
-    opts = {
-      style = "moon",
-
-    },
-  },
-
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
     opts = {
+      extensions = { 'nvim-dap-ui' },
       options = {
         icons_enabled = true,
         theme = 'tokyonight',
@@ -225,7 +241,7 @@ vim.o.breakident = true
 
 -- Don't continue a comment when pressing 'o'
 -- See `:help fo-table`
-vim.opts.formatoptions:remove('r')
+vim.opt.formatoptions:remove('r')
 
 -- Save undo history
 vim.o.undofile = true

@@ -13,35 +13,12 @@ return {
   dependencies = {
     -- Creates a beautiful debugger UI
     'rcarriga/nvim-dap-ui',
-
-    -- Installs the debug adapters for you
-    'williamboman/mason.nvim',
-    'jay-babu/mason-nvim-dap.nvim',
-
-    -- Add your own debuggers here
-    'leoluz/nvim-dap-go',
+    -- Debug Lua in NeoVim
+    'jbyuki/one-small-step-for-vimkind',
   },
   config = function()
     local dap = require 'dap'
     local dapui = require 'dapui'
-
-    require('mason-nvim-dap').setup {
-      -- Makes a best effort to setup the various debuggers with
-      -- reasonable debug configurations
-      automatic_setup = true,
-
-      -- You can provide additional configuration to the handlers,
-      -- see mason-nvim-dap README for more information
-      handlers = {},
-
-      -- You'll need to check that you have the required things installed
-      -- online, please don't ask me how to install them :)
-      ensure_installed = {
-        -- Update this to ensure that you have the debuggers for the langs you want
-        'codelldb',
-        'bash'
-      },
-    }
 
     -- Basic debugging keymaps, feel free to change to your liking!
     vim.keymap.set('n', '<F5>', dap.continue)
@@ -52,6 +29,54 @@ return {
     vim.keymap.set('n', '<leader>B', function()
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
     end)
+
+    dap.adapters.lldb_vscode = {
+      type = 'executable',
+      command = '/usr/bin/lldb-vscode', -- adjust as needed, must be absolute path
+      name = 'lldb'
+    }
+    dap.configurations.lua = {
+      {
+        type = 'nlua',
+        request = 'attach',
+        name = "Attach to running Neovim instance",
+      }
+    }
+
+    dap.adapters.nlua = function(callback, config)
+      --- don't warn us about a missing port or host key
+      --- @diagnostic disable-next-line: undefined-field
+      callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
+    end
+
+    dap.configurations.rust = {
+      {
+        name = "Rust",
+        type = "lldb_vscode",
+        request = 'launch',
+        cwd = "${workspaceFolder}",
+        stopOnEntry = false,
+        initCommands = function()
+          -- Find out where to look for the pretty printer Python module
+          local rustc_sysroot = vim.fn.trim(vim.fn.system('rustc --print sysroot'))
+
+          local script_import = 'command script import "' .. rustc_sysroot .. '/lib/rustlib/etc/lldb_lookup.py"'
+          local commands_file = rustc_sysroot .. '/lib/rustlib/etc/lldb_commands'
+
+          local commands = {}
+          local file = io.open(commands_file, 'r')
+          if file then
+            for line in file:lines() do
+              table.insert(commands, line)
+            end
+            file:close()
+          end
+          table.insert(commands, 1, script_import)
+
+          return commands
+        end,
+      }
+    }
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
@@ -80,8 +105,5 @@ return {
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
-
-    -- Install golang specific config
-    require('dap-go').setup()
   end,
 }
