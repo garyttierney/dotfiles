@@ -97,6 +97,7 @@ vim.lsp.commands["rust-analyzer.debugSingle"] = function(command, ctx)
         program = executable,
         cwd = "${workspaceFolder}",
         stopOnEntry = false,
+        runInTerminal = true,
         initCommands = function()
           -- Find out where to look for the pretty printer Python module
           local rustc_sysroot = vim.fn.trim(vim.fn.system('rustc --print sysroot'))
