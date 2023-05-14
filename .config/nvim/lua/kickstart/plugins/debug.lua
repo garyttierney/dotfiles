@@ -15,6 +15,33 @@ return {
     'rcarriga/nvim-dap-ui',
     -- Debug Lua in NeoVim
     'jbyuki/one-small-step-for-vimkind',
+    {
+      'theHamsta/nvim-dap-virtual-text',
+      branch = "inline-text",
+      opts = {
+        enabled = true,                     -- enable this plugin (the default)
+        enabled_commands = true,            -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did not notify its termination)
+        highlight_changed_variables = true, -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
+        highlight_new_as_changed = false,   -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
+        show_stop_reason = true,            -- show stop reason when stopped for exceptions
+        commented = false,                  -- prefix virtual text with comment string
+        only_first_definition = true,       -- only show virtual text at first definition (if there are multiple)
+        all_references = false,             -- show virtual text on all all references of the variable (not only definitions)
+        clear_on_continue = false,          -- clear virtual text on "continue" (might cause flickering when stepping)
+        --- A callback that determines how a variable is displayed or whether it should be omitted
+        --- @param variable Variable https://microsoft.github.io/debug-adapter-protocol/specification#Types_Variable
+        --- @param buf number
+        --- @param stackframe dap.StackFrame https://microsoft.github.io/debug-adapter-protocol/specification#Types_StackFrame
+        --- @param node userdata tree-sitter node identified as variable definition of reference (see `:h tsnode`)
+        --- @param options nvim_dap_virtual_text_options Current options for nvim-dap-virtual-text
+        --- @return string|nil A text how the virtual text should be displayed or nil, if this variable shouldn't be displayed
+        display_callback = function(variable, buf, stackframe, node, options)
+          return ' = ' .. variable.value
+        end,
+        -- position of virtual text, see `:h nvim_buf_set_extmark()`, default tries to inline the virtual text. Use 'eol' to set to end of line
+        virt_text_pos = 'inline'
+      }
+    }
   },
   config = function()
     local dap = require 'dap'
@@ -49,35 +76,6 @@ return {
       callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
     end
 
-    dap.configurations.rust = {
-      {
-        name = "Rust",
-        type = "lldb_vscode",
-        request = 'launch',
-        cwd = "${workspaceFolder}",
-        stopOnEntry = false,
-        initCommands = function()
-          -- Find out where to look for the pretty printer Python module
-          local rustc_sysroot = vim.fn.trim(vim.fn.system('rustc --print sysroot'))
-
-          local script_import = 'command script import "' .. rustc_sysroot .. '/lib/rustlib/etc/lldb_lookup.py"'
-          local commands_file = rustc_sysroot .. '/lib/rustlib/etc/lldb_commands'
-
-          local commands = {}
-          local file = io.open(commands_file, 'r')
-          if file then
-            for line in file:lines() do
-              table.insert(commands, line)
-            end
-            file:close()
-          end
-          table.insert(commands, 1, script_import)
-
-          return commands
-        end,
-      }
-    }
-
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
     dapui.setup {
@@ -102,8 +100,16 @@ return {
     -- toggle to see last session result. Without this ,you can't see session output in case of unhandled exception.
     vim.keymap.set("n", "<F7>", dapui.toggle)
 
-    dap.listeners.after.event_initialized['dapui_config'] = dapui.open
-    dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-    dap.listeners.before.event_exited['dapui_config'] = dapui.close
+    local function toggle_debug_ui(open)
+      if open then
+        dapui.open()
+      else
+        dapui.close()
+      end
+    end
+
+    dap.listeners.after.event_initialized['dapui_config'] = function() toggle_debug_ui(true) end
+    dap.listeners.before.event_terminated['dapui_config'] = function() toggle_debug_ui(false) end
+    dap.listeners.before.event_exited['dapui_config'] = function() toggle_debug_ui(false) end
   end,
 }
