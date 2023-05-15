@@ -64,6 +64,7 @@ require('lazy').setup({
   {
     'lvimuser/lsp-inlayhints.nvim',
     branch = "anticonceal",
+    opts = {},
   },
   {
     'lewis6991/satellite.nvim',
