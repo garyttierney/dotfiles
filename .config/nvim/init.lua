@@ -4,6 +4,14 @@
 vim.g.mapleader = ','
 vim.g.maplocalleader = ','
 
+-- Disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- NOTE: You should make sure your terminal supports this
+-- Set it here to nvim-notfiy doesn't complain.
+vim.o.termguicolors = true
+
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -30,24 +38,63 @@ require('lazy').setup({
     'folke/tokyonight.nvim',
     priority = 1000,
     opts = {
-      style = "moon",
+      style = 'moon',
     },
   },
-
-  -- Remember our previous session
+  -- Replace vim.notify
   {
-    'rmagatti/auto-session',
-    config = function()
-      require("auto-session").setup {
-        log_level = "error",
-        auto_session_suppress_dirs = { "~/", "~/devel", "/" },
-      }
-    end
+    'rcarriga/nvim-notify',
+    opts = {
+      timeout = 3000,
+      minimum_width = 30,
+      render = "compact",
+      stages = "fade"
+    }
   },
-
+  {
+    'mrjones2014/smart-splits.nvim',
+  },
+  -- Replace vim.ui.input/vim.ui.select
+  {
+    'stevearc/dressing.nvim',
+    opts = {},
+  },
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
+
+  -- File tree
+  {
+    'nvim-tree/nvim-tree.lua',
+    dependencies = { 'antosha417/nvim-lsp-file-operations' },
+    opts = {
+      diagnostics = {
+        enable = true,
+        show_on_dirs = false,
+        severity = {
+          min = vim.diagnostic.severity.ERROR
+        }
+      },
+      renderer = {
+        indent_markers = {
+          enable = true
+        }
+      }
+    }
+  },
+
+  -- LSP powered code folding
+  {
+    'kevinhwang91/nvim-ufo',
+    dependencies = { 'kevinhwang91/promise-async' },
+    opts = {
+      provider_selector = function(_, _, ft)
+        if ft == 'rust' then
+          return { 'lsp', 'treesitter' }
+        end
+      end
+    }
+  },
 
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
@@ -63,7 +110,7 @@ require('lazy').setup({
   -- Inlay hints for LSP elements
   {
     'lvimuser/lsp-inlayhints.nvim',
-    branch = "anticonceal",
+    branch = 'anticonceal',
     opts = {},
   },
   {
@@ -97,14 +144,14 @@ require('lazy').setup({
   },
   -- Breadcrumbs at the top of windows
   {
-    "utilyre/barbecue.nvim",
-    name = "barbecue",
+    'utilyre/barbecue.nvim',
+    name = 'barbecue',
     dependencies = {
-      "SmiteshP/nvim-navic",
-      "nvim-tree/nvim-web-devicons", -- optional dependency
+      'SmiteshP/nvim-navic',
+      'nvim-tree/nvim-web-devicons', -- optional dependency
     },
     opts = {
-      theme = "tokyonight",
+      theme = 'tokyonight',
     },
   },
   -- Replace statuscolumn with something more flexible
@@ -115,25 +162,25 @@ require('lazy').setup({
       require('statuscol').setup {
         setopt = true,
         relculright = true,
-        ft_ignore = { 'dapui_stacks', 'dapui_watches', 'dapui_breakpoints', 'dapui_console', 'dapui_scopes', 'dap-repl' },
-        bt_ignore = { 'terminal' },
+        ft_ignore = { 'dapui_stacks', 'dapui_watches', 'dapui_breakpoints', 'dapui_console', 'dapui_scopes', 'dap-repl',
+          'NvimTree' },
         segments = {
           {
-            sign = { name = { "Diagnostic" }, maxwidth = 1 },
-            click = "v:lua.ScSa"
+            sign = { name = { 'Diagnostic' }, maxwidth = 1 },
+            click = 'v:lua.ScSa'
           },
-          { text = { builtin.lnumfunc, " " }, click = 'v:lua.ScLa', },
+          { text = { builtin.lnumfunc, ' ' }, click = 'v:lua.ScLa', },
           {
-            sign = { name = { "Dap" }, maxwidth = 1, colwidth = 1 },
-            click = "v:lua.ScSa"
+            sign = { name = { 'Dap' }, maxwidth = 1, colwidth = 1 },
+            click = 'v:lua.ScSa'
           },
           {
             text = { builtin.foldfunc },
             click = 'v:lua.ScFa',
           },
           {
-            sign = { name = { "Git" }, maxwidth = 1, colwidth = 1 },
-            click = "v:lua.ScSa",
+            sign = { name = { 'Git' }, maxwidth = 1, colwidth = 1 },
+            click = 'v:lua.ScSa',
           },
           {
             text = { '▏' },
@@ -221,7 +268,7 @@ require('lazy').setup({
     },
   },
 
-  -- "gc" to comment visual regions/lines
+  -- 'gc' to comment visual regions/lines
   { 'numToStr/Comment.nvim',         opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
@@ -246,10 +293,10 @@ require('lazy').setup({
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
     },
-    build = ":TSUpdate",
+    build = ':TSUpdate',
   },
 
-  -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
+  -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional 'plugins' for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
   require 'kickstart.plugins.autoformat',
@@ -261,7 +308,7 @@ require('lazy').setup({
 -- See `:help vim.o`
 
 -- Use dark background color
-vim.o.background = "dark"
+vim.o.background = 'dark'
 
 -- Set highlight on search
 vim.o.hlsearch = false
@@ -271,7 +318,7 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 
 -- Enable mouse mode
-vim.o.mouse = 'a'
+vim.o.mouse = 'nic'
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -301,12 +348,8 @@ vim.o.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menu,menuone,preview,noinsert,noselect'
-
--- NOTE: You should make sure your terminal supports this
-vim.o.termguicolors = true
-
 -- Make sure LspInlayHint is displayed in the same way as a whitespace character
-vim.api.nvim_set_hl(0, 'LspInlayHint', { link = "Whitespace" })
+vim.api.nvim_set_hl(0, 'LspInlayHint', { link = 'Whitespace' })
 
 -- Enable virtual text for diagnostics and sort by seveirty for sign display
 vim.diagnostic.config({
@@ -316,16 +359,16 @@ vim.diagnostic.config({
   update_in_insert = true,
   severity_sort = true,
   float = {
-    border = "rounded"
+    border = 'rounded'
   }
 })
 
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
-  border = "rounded"
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
+  border = 'rounded'
 })
 
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-  border = "rounded",
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+  border = 'rounded',
 })
 
 -- Replace built-in symbol characters with Unicode alternatives
@@ -347,11 +390,13 @@ vim.opt.fillchars = {
 vim.opt.showbreak = '↪ '
 
 -- Use treesitter AST for code folding
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldenable = true
-vim.opt.foldminlines = 32
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
 vim.opt.foldcolumn = '1'
+
+-- Replace vim.notify with nvim-notify
+vim.notify = require('notify')
 
 vim.cmd.colorscheme 'tokyonight'
 
@@ -382,6 +427,24 @@ require('telescope').setup {
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
 
+vim.keymap.set('n', '<A-h>', require('smart-splits').resize_left)
+vim.keymap.set('n', '<A-j>', require('smart-splits').resize_down)
+vim.keymap.set('n', '<A-k>', require('smart-splits').resize_up)
+vim.keymap.set('n', '<A-l>', require('smart-splits').resize_right)
+
+-- moving between splits
+vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
+vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
+vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
+vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
+
+-- swapping buffers between windows
+vim.keymap.set('n', '<leader><leader>h', require('smart-splits').swap_buf_left)
+vim.keymap.set('n', '<leader><leader>j', require('smart-splits').swap_buf_down)
+vim.keymap.set('n', '<leader><leader>k', require('smart-splits').swap_buf_up)
+vim.keymap.set('n', '<leader><leader>l', require('smart-splits').swap_buf_right)
+
+vim.keymap.set('n', '<F1>', require('nvim-tree.api').tree.toggle, { desc = 'Toggle Tree' })
 vim.keymap.set('n', '<leader>sj', require('telescope.builtin').jumplist, { desc = '[S]earch [J]ump list' })
 vim.keymap.set('n', '<leader>st', require('telescope.builtin').tagstack, { desc = '[S]earch [T]agstack' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
@@ -398,7 +461,7 @@ require('nvim-treesitter.configs').setup {
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = true,
 
-  highlight = { enable = true },
+  highlight = { enable = true, disable = { 'rust' } },
   indent = { enable = true },
   incremental_selection = {
     enable = true,
@@ -415,8 +478,8 @@ require('nvim-treesitter.configs').setup {
         border = 'rounded'
       },
       peek_definition_code = {
-        ["<leader>ac"] = "@class.outer",
-        ["<leader>af"] = "@function.outer",
+        ['<leader>ac'] = '@class.outer',
+        ['<leader>af'] = '@function.outer',
       }
     },
     select = {
@@ -436,14 +499,14 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
-vim.api.nvim_create_augroup("LspAttach_setup", {})
-vim.api.nvim_create_autocmd("LspAttach", {
-  group = "LspAttach_setup",
+vim.api.nvim_create_augroup('LspAttach_setup', {})
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = 'LspAttach_setup',
   callback = function(args)
     if not (args.data and args.data.client_id) then
       return
@@ -467,7 +530,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-    nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+    nmap('<C-p>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
     if client.supports_method('textDocument/codeLens') then
       vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
@@ -478,7 +541,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       })
     end
 
-    require("lsp-inlayhints").on_attach(client, bufnr, false)
+    require('lsp-inlayhints').on_attach(client, bufnr, false)
   end
 })
 
@@ -508,6 +571,10 @@ require('neodev').setup()
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true
+}
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
@@ -559,7 +626,7 @@ cmp.setup {
   },
   experimental = {
     ghost_text = {
-      hl_group = "Whitespace"
+      hl_group = 'Whitespace'
     },
   },
   mapping = cmp.mapping.preset.insert {
