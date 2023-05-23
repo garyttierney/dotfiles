@@ -75,6 +75,11 @@ return {
       mods = 'CTRL',
       action = wezterm.action.OpenLinkAtMouseCursor,
     },
+    {
+      event = { Up = { streak = 1, button = "Left" } },
+      mods = "NONE",
+      action = wezterm.action.Nop,
+    },
   },
   keys = {
     { key = 'Tab', mods = 'CTRL',         action = 'DisableDefaultAssignment' },
