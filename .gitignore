@@ -11,6 +11,9 @@
 # Keep .gitignore
 !.gitignore
 
+# Keep git configuration
+!.gitconfig
+
 # Keep neovim configuration
 !.config/nvim/
 !.config/nvim/**

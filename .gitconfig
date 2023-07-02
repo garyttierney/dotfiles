@@ -1,0 +1,7 @@
+[user]
+	email = gary.tierney@fastmail.com
+	name = Gary Tierney
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+[push]
+	autoSetupRemote = true
