@@ -106,13 +106,6 @@ require('lazy').setup({
       check_ts = true
     }
   },
-
-  -- Inlay hints for LSP elements
-  {
-    'lvimuser/lsp-inlayhints.nvim',
-    branch = 'anticonceal',
-    opts = {},
-  },
   {
     'lewis6991/satellite.nvim',
     config = function()
@@ -317,16 +310,13 @@ vim.o.hlsearch = false
 vim.wo.number = true
 vim.wo.relativenumber = true
 
--- Enable mouse mode
-vim.o.mouse = 'nic'
-
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
-vim.o.breakident = true
+vim.o.breakindent = true
 
 -- Don't continue a comment when pressing 'o'
 -- See `:help fo-table`
@@ -462,7 +452,7 @@ require('nvim-treesitter.configs').setup {
   auto_install = true,
 
   highlight = { enable = true, disable = { 'rust' } },
-  indent = { enable = true },
+  indent = { enable = true, disable = { 'yaml' } },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -531,6 +521,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
     nmap('<C-p>', vim.lsp.buf.signature_help, 'Signature Documentation')
+
+    vim.lsp.buf.inlay_hint(bufnr, true)
 
     if client.supports_method('textDocument/codeLens') then
       vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
