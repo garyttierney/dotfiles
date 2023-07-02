@@ -3,6 +3,10 @@
 
 # But search in our whitelisted directories
 !.config/
+!.bashrc.d/
+
+# Keep bash profile configuration
+!.bashrc.d/*
 
 # Keep .gitignore
 !.gitignore
