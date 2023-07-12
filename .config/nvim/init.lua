@@ -202,6 +202,8 @@ require('lazy').setup({
     },
   },
 
+  'b0o/schemastore.nvim',
+
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -522,7 +524,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
     nmap('<C-p>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
-    vim.lsp.buf.inlay_hint(bufnr, true)
+    if client.supports_method('textDocument/inlayHint') then
+      vim.lsp.inlay_hint(bufnr, true)
+    end
 
     if client.supports_method('textDocument/codeLens') then
       vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
@@ -532,8 +536,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         buffer = bufnr
       })
     end
-
-    require('lsp-inlayhints').on_attach(client, bufnr, false)
   end
 })
 
