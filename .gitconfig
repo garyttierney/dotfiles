@@ -5,3 +5,16 @@
 	insteadOf = https://github.com/
 [push]
 	autoSetupRemote = true
+[diff]
+	external = difft
+[core]
+	editor = nvim
+[rebase]
+	autoStash = true
+[fetch]
+	prune = true
+[pull]
+	rebase = preserve
+[rerere]
+	enabled = true
+
