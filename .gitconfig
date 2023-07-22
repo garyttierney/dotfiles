@@ -14,7 +14,7 @@
 [fetch]
 	prune = true
 [pull]
-	rebase = preserve
+	rebase = merges
 [rerere]
 	enabled = true
 

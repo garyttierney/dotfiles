@@ -195,7 +195,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       opts = {} },
+      { 'j-hui/fidget.nvim',       opts = {},    branch = 'legacy' },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -548,6 +548,25 @@ local servers = {
   clangd = {},
   -- gopls = {},
   -- pyright = {},
+  jsonls = {
+    json = {
+      schemas = require('schemastore').json.schemas(),
+      validate = { enable = true },
+    },
+  },
+  yamlls = {
+    yaml = {
+      schemaStore = {
+        url = '',
+        -- You must disable built-in schemaStore support if you want to use
+        -- this plugin and its advanced options like `ignore`.
+        enable = false,
+      },
+      schemas = require('schemastore').yaml.schemas(),
+    },
+  },
+  terraformls = {},
+  tflint = {},
   rust_analyzer = {},
   -- tsserver = {},
 
