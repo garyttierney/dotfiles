@@ -1,0 +1,5 @@
+HISTFILESIZE=400000000
+HISTSIZE=10000
+PROMPT_COMMAND="history -a"
+
+shopt -s histappend
