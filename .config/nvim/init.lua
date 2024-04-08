@@ -67,20 +67,6 @@ require('lazy').setup({
   {
     'nvim-tree/nvim-tree.lua',
     dependencies = { 'antosha417/nvim-lsp-file-operations' },
-    opts = {
-      diagnostics = {
-        enable = true,
-        show_on_dirs = false,
-        severity = {
-          min = vim.diagnostic.severity.ERROR
-        }
-      },
-      renderer = {
-        indent_markers = {
-          enable = true
-        }
-      }
-    }
   },
 
   -- LSP powered code folding
@@ -105,35 +91,6 @@ require('lazy').setup({
     opts = {
       check_ts = true
     }
-  },
-  {
-    'lewis6991/satellite.nvim',
-    config = function()
-      require('satellite').setup({
-        current_only = false,
-        winblend = 50,
-        zindex = 40,
-        excluded_filetypes = {},
-        width = 2,
-        handlers = {
-          search = {
-            enable = true,
-          },
-          diagnostic = {
-            enable = true,
-            signs = { '-', '=', '≡' },
-            min_severity = vim.diagnostic.severity.HINT,
-          },
-          gitsigns = {
-            enable = false,
-          },
-          marks = {
-            enable = true,
-            show_builtins = false, -- shows the builtin marks like [ ] < >
-          },
-        },
-      })
-    end
   },
   -- Breadcrumbs at the top of windows
   {
@@ -183,6 +140,7 @@ require('lazy').setup({
     end
   },
 
+  { 'https://git.sr.ht/~whynothugo/lsp_lines.nvim', opts = {} },
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
@@ -211,15 +169,15 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'hrsh7th/cmp-cmdline',
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
+      'hrsh7th/vim-vsnip',
+      'hrsh7th/cmp-vsnip',
       'onsails/lspkind.nvim',
       'nvim-tree/nvim-web-devicons'
     },
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',          opts = {} },
+  { 'folke/which-key.nvim' },
   {
     -- Adds git releated signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -252,14 +210,11 @@ require('lazy').setup({
   {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
+    main = "ibl",
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
     opts = {
-      char = '┊',
-      context_char = '┊',
-      show_trailing_blankline_indent = true,
-      show_first_indent_level = false,
-      show_current_context = true,
+      indent = { char = '▏' }
     },
   },
 
@@ -301,6 +256,20 @@ require('lazy').setup({
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
+require("nvim-tree").setup({
+  diagnostics = {
+    enable = true,
+    show_on_dirs = false,
+    severity = {
+      min = vim.diagnostic.severity.ERROR
+    }
+  },
+  renderer = {
+    indent_markers = {
+      enable = true
+    }
+  }
+})
 
 -- Use dark background color
 vim.o.background = 'dark'
@@ -355,10 +324,6 @@ vim.diagnostic.config({
   }
 })
 
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
-  border = 'rounded'
-})
-
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
   border = 'rounded',
 })
@@ -366,10 +331,10 @@ vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
 -- Replace built-in symbol characters with Unicode alternatives
 vim.fn.sign_define({
   { name = 'DiagnosticSignError', text = '', texthl = 'DiagnosticError' },
-  { name = 'DiagnosticSignInfo',  text = '', texthl = 'DiagnosticInfo' },
-  { name = 'DiagnosticSignHint',  text = '', texthl = 'DiagnosticHint' },
-  { name = 'DiagnosticSignWarn',  text = '', texthl = 'DiagnosticWarn' },
-  { name = 'DapBreakpoint',       text = '⏺', texthl = 'DiagnosticError' },
+  { name = 'DiagnosticSignInfo', text = '', texthl = 'DiagnosticInfo' },
+  { name = 'DiagnosticSignHint', text = '', texthl = 'DiagnosticHint' },
+  { name = 'DiagnosticSignWarn', text = '', texthl = 'DiagnosticWarn' },
+  { name = 'DapBreakpoint', text = '⏺', texthl = 'DiagnosticError' },
 })
 
 vim.opt.fillchars = {
@@ -439,10 +404,12 @@ vim.keymap.set('n', '<leader><leader>l', require('smart-splits').swap_buf_right)
 vim.keymap.set('n', '<F1>', require('nvim-tree.api').tree.toggle, { desc = 'Toggle Tree' })
 vim.keymap.set('n', '<leader>sj', require('telescope.builtin').jumplist, { desc = '[S]earch [J]ump list' })
 vim.keymap.set('n', '<leader>st', require('telescope.builtin').tagstack, { desc = '[S]earch [T]agstack' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sf', require('telescope.builtin').fd, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>sn', require('telescope.builtin').lsp_dynamic_workspace_symbols,
+  { desc = '[S]earch [N]ames' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -524,8 +491,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
     nmap('<C-p>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
+    vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
+
     if client.supports_method('textDocument/inlayHint') then
-      vim.lsp.inlay_hint(bufnr, true)
+      vim.lsp.inlay_hint.enable(bufnr, true)
     end
 
     if client.supports_method('textDocument/codeLens') then
@@ -539,15 +508,45 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end
 })
 
--- Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
---
---  Add any additional override configuration in the following tables. They will be passed to
---  the `settings` field of the server config. You must look up that documentation yourself.
+
+local severity_map = { "E", "W", "I", "H" }
+
+local parse_diagnostics = function(diagnostics)
+  if not diagnostics then return end
+  local items = {}
+  for _, diagnostic in ipairs(diagnostics) do
+    local fname = vim.fn.bufname()
+    local position = diagnostic.range.start
+    local severity = diagnostic.severity
+    table.insert(items, {
+      filename = fname,
+      type = severity_map[severity],
+      lnum = position.line + 1,
+      col = position.character + 1,
+      text = diagnostic.message:gsub("\r", ""):gsub("\n", " ")
+    })
+  end
+  return items
+end
+
+-- redefine unwanted callbacks to be an empty function
+-- notice that I keep `vim.lsp.util.buf_diagnostics_underline()`
+vim.api.nvim_create_autocmd('DiagnosticChanged', {
+  callback = function()
+    vim.diagnostic.setloclist({
+      open = false,
+      severity = vim.diagnostic.severity.ERROR
+    })
+
+    local window = vim.api.nvim_get_current_win()
+    vim.cmd.lwindow()
+    vim.api.nvim_set_current_win(window)
+  end,
+  pattern = '*',
+})
+
 local servers = {
   clangd = {},
-  -- gopls = {},
-  -- pyright = {},
   jsonls = {
     json = {
       schemas = require('schemastore').json.schemas(),
@@ -568,8 +567,6 @@ local servers = {
   terraformls = {},
   tflint = {},
   rust_analyzer = {},
-  -- tsserver = {},
-
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -607,9 +604,6 @@ mason_lspconfig.setup_handlers {
 
 -- nvim-cmp setup
 local cmp = require 'cmp'
-local luasnip = require 'luasnip'
-
-luasnip.config.setup {}
 
 cmp.setup {
   formatting = {
@@ -630,7 +624,7 @@ cmp.setup {
   },
   snippet = {
     expand = function(args)
-      luasnip.lsp_expand(args.body)
+      vim.fn["vsnip#anonymous"](args.body)
     end,
   },
   window = {
@@ -657,8 +651,6 @@ cmp.setup {
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
       else
         fallback()
       end
@@ -666,8 +658,6 @@ cmp.setup {
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
       else
         fallback()
       end
@@ -676,7 +666,7 @@ cmp.setup {
   sources = {
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
-    { name = 'luasnip' },
+    { name = 'vsnip' },
   },
 }
 
@@ -690,9 +680,34 @@ cmp.setup.cmdline(':', {
       {
         name = 'cmdline',
         option = {
-          ignore_cmds = { 'Man', '!' }
+          ignore_cmds = { 'Man', '!', 'tag' }
         }
       }
     }
   )
+})
+
+vim.diagnostic.config({ virtual_lines = { only_current_line = true }, virtual_text = false })
+
+require('which-key').setup({
+  plugins = {
+    marks = true,     -- shows a list of your marks on ' and `
+    registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
+    -- the presets plugin, adds help for a bunch of default keybindings in Neovim
+    -- No actual key bindings are created
+    spelling = {
+      enabled = true,   -- enabling this will show WhichKey when pressing z= to select spelling suggestions
+      suggestions = 20, -- how many suggestions should be shown in the list?
+    },
+    presets = {
+      operators = false,    -- adds help for operators like d, y, ...
+      motions = false,      -- adds help for motions
+      text_objects = false, -- help for text objects triggered after entering an operator
+      windows = false,      -- default bindings on <c-w>
+      nav = false,          -- misc bindings to work with windows
+      z = false,            -- bindings for folds, spelling and others prefixed with z
+      g = true,             -- bindings for prefixed with g
+    },
+  },
+
 })
